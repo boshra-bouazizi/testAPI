@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using SchoolManagement.DATA;
+using SchoolManagement.Services.Repositories;
 
 namespace SchoolManagement.API
 {
@@ -25,6 +22,10 @@ namespace SchoolManagement.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddDbContext<SchoolManagementContext>(
+                         options => options.UseSqlServer(Configuration.GetConnectionString("SchoolManagementConnection")));
+            services.AddScoped<IStudentRepository, StudentRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
