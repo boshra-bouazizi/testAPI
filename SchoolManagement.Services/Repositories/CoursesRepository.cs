@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SchoolManagement.Services.Repositories
 {
-    public class CoursesRepository
+    public class CoursesRepository: ICoursesRepository
     {
 
         private readonly SchoolManagementContext _context;
@@ -56,7 +56,25 @@ namespace SchoolManagement.Services.Repositories
 
         }
 
+        public async Task<Courses> UpdateCourses(Courses newCourses)
+        {
+            var coursesToUpdate = await GetCoursesById(newCourses.Id);
 
+            coursesToUpdate.Name = newCourses.Name;
+            coursesToUpdate.ClassId = newCourses.ClassId;
+
+            return (coursesToUpdate);
+
+        }
+
+        public async Task DeleteCourses(int id)
+        {
+            var coursesToDelete = await GetCoursesById(id);
+            var listOfCourses = await _context.Courses.ToListAsync();
+            listOfCourses.Remove(coursesToDelete);
+        }
+
+       
     }
 
 }

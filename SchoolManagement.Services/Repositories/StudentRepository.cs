@@ -55,6 +55,23 @@ namespace SchoolManagement.Services.Repositories
 
         }
 
-       
+        public async Task<Student> UpdateStudent(Student newStudent)
+        {
+            var studentToUpdate = await GetStudentById(newStudent.Id);
+
+            studentToUpdate.LastName = newStudent.LastName;
+            studentToUpdate.FirstName = newStudent.FirstName;
+            studentToUpdate.BirthDate = newStudent.BirthDate;
+            studentToUpdate.StudentCardId = newStudent.StudentCardId;
+            return(studentToUpdate);
+             
+        }
+
+        public async Task DeleteStudentById(int id)
+        {
+            var studentToDelete = await GetStudentById(id);
+            var listOfStudents=await _context.Students.ToListAsync();
+            listOfStudents.Remove(studentToDelete);
+        }
     }
 }

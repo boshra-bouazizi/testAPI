@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SchoolManagement.Services.Repositories
 {
-    class ClassRepository
+    class ClassRepository:IClassRepository
     {
         private readonly SchoolManagementContext _context;
 
@@ -25,32 +25,50 @@ namespace SchoolManagement.Services.Repositories
             return await _context.Classes.FirstOrDefaultAsync(Class => Class.Id == id);
         }
 
-        public async Task<Class> Add(Class ClassToAdd)
+        public async Task<Class> Add(Class classToAdd)
         {
             //if(ClassToAdd == null)
             //{
             //    return  ArgumentNullException();
             //}
 
-            var Class = new Class()
+            var _class = new Class()
             {
-                Name = ClassToAdd.Name,
-                Division = ClassToAdd.Division
+                Name = classToAdd.Name,
+                Division = classToAdd.Division
             };
             // 1- Ajout de l'entité crée au niveau de la memoire temporelle 
-            _context.Add(Class);
+            _context.Add(_class);
 
             // 2- Persist changes to the database
 
             if (await _context.SaveChangesAsync() >= 0)
             {
-                return Class;
+                return _class;
             }
             else
             {
                 return null;
             }
 
+        }
+
+        public async Task<Class> UpdateClass(Class newClass)
+        {
+            var classToUpdate = await GetClassById(newClass.Id);
+
+            classToUpdate.Name = newClass.Name;
+            classToUpdate.Division = newClass.Division;
+
+            return (classToUpdate);
+
+        }
+
+        public async Task DeleteClass(int id)
+        {
+            var classToDelete = await GetClassById(id);
+            var listOfClasses = await _context.Classes.ToListAsync();
+            listOfClasses.Remove(classToDelete);
         }
 
 

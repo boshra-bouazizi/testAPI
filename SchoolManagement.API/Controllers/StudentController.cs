@@ -56,6 +56,17 @@ namespace SchoolManagement.API.Controllers
             IEnumerable<Student> studentList = await _studentRepository.GetAll();
             return Ok(studentList);
         }
-
+        [HttpPut]
+        public async Task<IActionResult> UpdateStudent([FromBody]Student student) 
+        {
+            var studentToUpdate = await _studentRepository.UpdateStudent(student);
+            
+            return Ok(studentToUpdate);
+        }
+        [HttpDelete("GetStudent/{id:int}")]
+        public async Task DeleteStudent([FromBody] Student student)
+        {
+             await _studentRepository.DeleteStudentById(student.Id);  
+        }
     }
 }

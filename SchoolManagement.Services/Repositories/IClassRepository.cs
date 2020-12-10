@@ -11,5 +11,7 @@ namespace SchoolManagement.Services.Repositories
         Task<IEnumerable<Class>> GetAll();
         Task<Class> Add(Class classToAdd);
         Task<Class> GetClassById(int id);
+        Task<Class> UpdateClass(Class newClass);
+        Task DeleteClass(int id);
     }
 }

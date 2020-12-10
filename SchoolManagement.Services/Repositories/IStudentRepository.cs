@@ -9,5 +9,7 @@ namespace SchoolManagement.Services.Repositories
         Task<IEnumerable<Student>> GetAll();
         Task<Student> Add(Student studentToAdd);
         Task<Student> GetStudentById(int id);
+        Task<Student> UpdateStudent(Student newStudent);
+        Task DeleteStudentById(int id);
     }
 }

@@ -11,6 +11,8 @@ namespace SchoolManagement.Services.Repositories
         Task<IEnumerable<Courses>> GetAll();
         Task<Courses> Add(Courses coursesToAdd);
         Task<Courses> GetCoursesById(int id);
+        Task<Courses> UpdateCourses(Courses newCourses);
+        Task DeleteCourses(int id);
     }
 
 }
