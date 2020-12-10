@@ -9,5 +9,8 @@ namespace SchoolManagement.DOMAIN
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public DateTime BirthDate { get; set; }
+        public string StudentCardId { get; set; }
+        public virtual ICollection<StudentClass> StudentClasses { get; set; }
     }
 }

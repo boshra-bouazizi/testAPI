@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolManagement.DATA;
 
 namespace SchoolManagement.DATA.Migrations
 {
     [DbContext(typeof(SchoolManagementContext))]
-    partial class SchoolManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20201210094929_addedClassStudent")]
+    partial class addedClassStudent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,27 +36,7 @@ namespace SchoolManagement.DATA.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Classes");
-                });
-
-            modelBuilder.Entity("SchoolManagement.DOMAIN.Courses", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ClassId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClassId");
-
-                    b.ToTable("Courses");
+                    b.ToTable("Class");
                 });
 
             modelBuilder.Entity("SchoolManagement.DOMAIN.Student", b =>
@@ -93,16 +75,7 @@ namespace SchoolManagement.DATA.Migrations
 
                     b.HasIndex("ClassId");
 
-                    b.ToTable("StudentClasses");
-                });
-
-            modelBuilder.Entity("SchoolManagement.DOMAIN.Courses", b =>
-                {
-                    b.HasOne("SchoolManagement.DOMAIN.Class", "MyClass")
-                        .WithMany()
-                        .HasForeignKey("ClassId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.ToTable("StudentClass");
                 });
 
             modelBuilder.Entity("SchoolManagement.DOMAIN.StudentClass", b =>
