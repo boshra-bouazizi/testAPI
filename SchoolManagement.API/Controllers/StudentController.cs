@@ -22,7 +22,6 @@ namespace SchoolManagement.API.Controllers
         }
 
         [HttpPost]
-
         public async Task<IActionResult> AddStudent([FromBody]StudentModel student)
         {
             var studentToAdd = new Student()
