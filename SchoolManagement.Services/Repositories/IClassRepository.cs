@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SchoolManagement.Services.Repositories
 {
-    interface IClassRepository
+    public interface IClassRepository
     {
         Task<IEnumerable<Class>> GetAll();
         Task<Class> Add(Class classToAdd);

@@ -15,7 +15,6 @@ namespace SchoolManagement.API.Controllers
     public class StudentController : ControllerBase
     {
         private readonly IStudentRepository _studentRepository;
-
         public StudentController(IStudentRepository studentRepository)
         {
             _studentRepository = studentRepository;
@@ -48,7 +47,6 @@ namespace SchoolManagement.API.Controllers
             var studentToReturn = await _studentRepository.GetStudentById(id);
             return Ok(studentToReturn);
         }
-
         [HttpGet()]
         public async Task<IActionResult> GetAll()
         {
