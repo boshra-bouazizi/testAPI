@@ -41,7 +41,7 @@ namespace SchoolManagement.API.Controllers
             }
         }
 
-        [HttpGet("GetCourses/{id:int}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetCourses(int id)
         {
             var coursesToReturn = await _coursesRepository.GetCoursesById(id);
@@ -63,10 +63,10 @@ namespace SchoolManagement.API.Controllers
             return Ok(coursesToUpdate);
         }
 
-        [HttpDelete]
-        public async Task DeleteCourses([FromBody] Courses courses)
+        [HttpDelete("{id:int}")]
+        public async Task DeleteCourses(int id)
         {
-            await _coursesRepository.DeleteCourses(courses.Id);
+            await _coursesRepository.DeleteCourses(id);
         }
     }
 

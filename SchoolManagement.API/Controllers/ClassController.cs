@@ -63,10 +63,10 @@ namespace SchoolManagement.API.Controllers
             return Ok(classToUpdate);
         }
 
-        [HttpDelete]
-        public async Task DeleteClass([FromBody] Class _class)
+        [HttpDelete("{id:int}")]
+        public async Task DeleteClass(int id)
         {
-            await _classRepository.DeleteClass(_class.Id);
+            await _classRepository.DeleteClass(id);
         }
     }
 

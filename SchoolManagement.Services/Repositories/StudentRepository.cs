@@ -67,11 +67,18 @@ namespace SchoolManagement.Services.Repositories
              
         }
 
-        public async Task DeleteStudentById(int id)
+        public async Task<bool> DeleteStudentById(int id)
         {
             var studentToDelete = await GetStudentById(id);
             var listOfStudents=await _context.Students.ToListAsync();
             listOfStudents.Remove(studentToDelete);
+            if (await _context.SaveChangesAsync() >= 0)
+            {
+                return true;
+            }else
+            {
+                return false;
+            }
         }
     }
 }
