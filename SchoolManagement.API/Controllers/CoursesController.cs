@@ -41,33 +41,33 @@ namespace SchoolManagement.API.Controllers
             }
         }
 
-        //[HttpGet("GetClass/{id:int}")]
-        //public async Task<IActionResult> GetClass(int id)
-        //{
-        //    var classToReturn = await _classRepository.GetClassById(id);
-        //    return Ok(classToReturn);
-        //}
+        [HttpGet("GetCourses/{id:int}")]
+        public async Task<IActionResult> GetCourses(int id)
+        {
+            var coursesToReturn = await _coursesRepository.GetCoursesById(id);
+            return Ok(coursesToReturn);
+        }
 
-        //[HttpGet()]
-        //public async Task<IActionResult> GetAll()
-        //{
-        //    IEnumerable<Class> classList = await _classRepository.GetAll();
-        //    return Ok(classList);
-        //}
+        [HttpGet()]
+        public async Task<IActionResult> GetAll()
+        {
+            IEnumerable<Courses> coursesList = await _coursesRepository.GetAll();
+            return Ok(coursesList);
+        }
 
-        //[HttpPut]
-        //public async Task<IActionResult> UpdateClass([FromBody] Class _class)
-        //{
-        //    var classToUpdate = await _classRepository.UpdateClass(_class);
+        [HttpPut]
+        public async Task<IActionResult> UpdateCourses([FromBody] Courses courses)
+        {
+            var coursesToUpdate = await _coursesRepository.UpdateCourses(courses);
 
-        //    return Ok(classToUpdate);
-        //}
+            return Ok(coursesToUpdate);
+        }
 
-        //[HttpDelete]
-        //public async Task DeleteClass([FromBody] Class _class)
-        //{
-        //    await _classRepository.DeleteClass(_class.Id);
-        //}
+        [HttpDelete]
+        public async Task DeleteCourses([FromBody] Courses courses)
+        {
+            await _coursesRepository.DeleteCourses(courses.Id);
+        }
     }
 
 }
