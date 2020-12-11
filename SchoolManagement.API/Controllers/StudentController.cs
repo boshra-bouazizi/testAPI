@@ -60,7 +60,9 @@ namespace SchoolManagement.API.Controllers
             
             return Ok(studentToUpdate);
         }
-        [HttpDelete]
+
+
+        [HttpPost("DeleteStudent/{id:int}")]
         public async Task DeleteStudent([FromBody] Student student)
         {
              await _studentRepository.DeleteStudentById(student.Id);  
