@@ -29,23 +29,31 @@ namespace SchoolManagement.API.Controllers
                 Division = _class.Division
             };
 
-            var addedClass = await _classRepository.Add(classToAdd);
+            var addedClass = await _classRepository.AddClass(classToAdd);
 
-            if (addedClass == null)
+            if (addedClass == false)
             {
-                return BadRequest("Une erreur a surevenue");
+                return BadRequest("Failure to add item");
             }
             else
             {
-                return Ok(addedClass);
+                return Ok("Addition successfully");
             }
         }
 
-        [HttpGet("GetClass/{id:int}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetClass(int id)
         {
-            var classToReturn = await _classRepository.GetClassById(id);
-            return Ok(classToReturn);
+            var classToReturn = await _classRepository.GetClass(id);
+            if (classToReturn == null)
+            {
+                return NotFound("Not found item.");
+            }
+            else
+            {
+                return Ok(classToReturn);
+            }
+
         }
 
         [HttpGet()]
@@ -58,15 +66,34 @@ namespace SchoolManagement.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateClass([FromBody] Class _class)
         {
-            var classToUpdate = await _classRepository.UpdateClass(_class);
+            if (_class == null)
+            { 
+                return NotFound("No founded item."); 
+            }
+            else 
+            {
+                await _classRepository.UpdateClass(_class);
+                return Ok("Updating successfully");
+            }
+            
 
-            return Ok(classToUpdate);
+            
         }
 
         [HttpDelete("{id:int}")]
-        public async Task DeleteClass(int id)
+        public async Task<IActionResult> DeleteClass(int id)
         {
-            await _classRepository.DeleteClass(id);
+            Class classToDelete =await _classRepository.GetClass(id);
+            if (classToDelete==null) 
+            { 
+                return NotFound("Not founded item"); 
+            }
+            else 
+            {
+                await _classRepository.DeleteClass(classToDelete);
+                return Ok("Suppression with success");
+            }
+            
         }
     }
 

@@ -3,6 +3,7 @@ using SchoolManagement.DATA;
 using SchoolManagement.DOMAIN;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,68 +20,71 @@ namespace SchoolManagement.Services.Repositories
 
         public async Task<IEnumerable<Student>> GetAll()
         {
-           return await _context.Students.ToListAsync();
+            return await _context.Students.ToListAsync();
         }
 
-        public async Task<Student> GetStudentById(int id)
+        public async Task<Student> GetStudent(int id)
         {
             return await _context.Students.FirstOrDefaultAsync(student => student.Id == id);
         }
 
-        public async Task<Student> Add(Student studentToAdd)
+        public async Task<bool> AddStudent(Student studentToAdd)
         {
-            //if(studentToAdd == null)
-            //{
-            //    return  ArgumentNullException();
-            //}
-
             var student = new Student()
             {
                 FirstName = studentToAdd.FirstName,
-                LastName = studentToAdd.LastName
+                LastName = studentToAdd.LastName,
+                BirthDate = studentToAdd.BirthDate
             };
-            // 1- Ajout de l'entité crée au niveau de la memoire temporelle 
-            _context.Add(student);
 
-            // 2- Persist changes to the database
-
-            if (await _context.SaveChangesAsync() >= 0)
-            {
-                return student;
-            }
-            else
-            {
-                return null;
-            }
-
-        }
-
-        public async Task<Student> UpdateStudent(Student newStudent)
-        {
-            var studentToUpdate = await GetStudentById(newStudent.Id);
-
-            studentToUpdate.LastName = newStudent.LastName;
-            studentToUpdate.FirstName = newStudent.FirstName;
-            studentToUpdate.BirthDate = newStudent.BirthDate;
-            studentToUpdate.StudentCardId = newStudent.StudentCardId;
-            return(studentToUpdate);
-             
-        }
-
-        public async Task<bool> DeleteStudentById(int id)
-        {
-            var listOfStudents=await _context.Students.ToListAsync();
-            var studentToDelete = await GetStudentById(id);
-            
-            listOfStudents.Remove(studentToDelete);
-            if (await _context.SaveChangesAsync() >= 0)
-            {
-                return true;
-            }
-            else
+            if (studentToAdd == null)
             {
                 return false;
             }
+
+            else 
+            {
+                _context.Add(student);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            
+
+        }
+
+        public async Task<bool> UpdateStudent(Student student)
+        {
+            Student studentToUpdate = await GetStudent(student.Id);
+            if (studentToUpdate == null)
+            {
+                return false;
+            }
+           
+            else 
+            {
+                studentToUpdate.LastName = student.LastName;
+                studentToUpdate.FirstName = student.FirstName;
+                studentToUpdate.BirthDate = student.BirthDate;
+                studentToUpdate.StudentCardId = student.StudentCardId;
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            
+        }
+
+        public async Task<bool> DeleteStudent(Student studentToDelete)
+        {
+            if (studentToDelete == null)
+            {
+                return  false;
+            }
+            else
+            {
+                _context.Students.Remove(studentToDelete);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            
         }
     }
 }

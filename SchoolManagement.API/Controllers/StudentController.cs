@@ -21,31 +21,42 @@ namespace SchoolManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddStudent([FromBody]StudentModel student)
+        public async Task<IActionResult> AddStudent([FromBody] StudentModel student)
         {
             var studentToAdd = new Student()
             {
                 FirstName = student.FirstName,
-                LastName = student.LastName
+                LastName = student.LastName,
+                BirthDate = student.BirthDate
             };
 
-            var addedStudent = await _studentRepository.Add(studentToAdd);
+            var addedStudent = await _studentRepository.AddStudent(studentToAdd);
 
-            if (addedStudent == null)
+            if (addedStudent == false)
             {
-                return BadRequest("Une erreur a surevenue");
+                return BadRequest("Failure to add item");
             }
             else
             {
-                return Ok(addedStudent);
+                return Ok("Addition successfully");
             }
         }
 
-        [HttpGet("GetStudent/{id:int}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetStudent(int id)
         {
-            var studentToReturn = await _studentRepository.GetStudentById(id);
-            return Ok(studentToReturn);
+
+            var studentToReturn = await _studentRepository.GetStudent(id);
+            if (studentToReturn==null)
+            {
+                return NotFound("Not found item.");
+            }
+            else 
+            {
+                return Ok(studentToReturn);
+            }
+
+            
         }
         [HttpGet()]
         public async Task<IActionResult> GetAll()
@@ -53,19 +64,36 @@ namespace SchoolManagement.API.Controllers
             IEnumerable<Student> studentList = await _studentRepository.GetAll();
             return Ok(studentList);
         }
+
         [HttpPut]
-        public async Task<IActionResult> UpdateStudent([FromBody]Student student) 
+        public async Task<IActionResult> UpdateStudent([FromBody] Student student)
         {
-            var studentToUpdate = await _studentRepository.UpdateStudent(student);
-            
-            return Ok(studentToUpdate);
+            if (student == null)
+            {
+                return NotFound("No founded item.");
+            }
+            else
+            {
+                await _studentRepository.UpdateStudent(student);
+                return Ok("ok");
+            }
         }
 
-        
+
         [HttpDelete("{id:int}")]
-        public async Task DeleteStudent(int id)
+        public async Task<IActionResult> DeleteStudent(int id)
         {
-             await _studentRepository.DeleteStudentById(id);  
+            Student studentToDelete = await _studentRepository.GetStudent(id);
+
+            if (studentToDelete == null)
+            {
+                return NotFound("Not founded item");
+            }
+            else 
+            {
+                await _studentRepository.DeleteStudent(studentToDelete);
+                return Ok("Suppression with success");
+            }
         }
     }
 }

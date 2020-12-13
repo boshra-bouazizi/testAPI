@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SchoolManagement.Services.Repositories
 {
-    class ClassRepository:IClassRepository
+    public class ClassRepository : IClassRepository
     {
         private readonly SchoolManagementContext _context;
 
@@ -20,55 +20,63 @@ namespace SchoolManagement.Services.Repositories
             return await _context.Classes.ToListAsync();
         }
 
-        public async Task<Class> GetClassById(int id)
+        public async Task<Class> GetClass(int id)
         {
-            return await _context.Classes.FirstOrDefaultAsync(Class => Class.Id == id);
+            return await _context.Classes.FirstOrDefaultAsync(_class => _class.Id == id);
         }
 
-        public async Task<Class> Add(Class classToAdd)
+        public async Task<bool> AddClass(Class classToAdd)
         {
-            //if(ClassToAdd == null)
-            //{
-            //    return  ArgumentNullException();
-            //}
 
             var _class = new Class()
             {
                 Name = classToAdd.Name,
                 Division = classToAdd.Division
             };
-            // 1- Ajout de l'entité crée au niveau de la memoire temporelle 
-            _context.Add(_class);
 
-            // 2- Persist changes to the database
-
-            if (await _context.SaveChangesAsync() >= 0)
+            if (classToAdd == null)
             {
-                return _class;
+                return false;
             }
+
             else
             {
-                return null;
+                _context.Add(_class);
+                await _context.SaveChangesAsync();
+                return true;
             }
 
         }
 
-        public async Task<Class> UpdateClass(Class newClass)
+        public async Task<bool> UpdateClass(Class _class)
         {
-            var classToUpdate = await GetClassById(newClass.Id);
+            var classToUpdate = await GetClass(_class.Id);
+            if (classToUpdate == null)
 
-            classToUpdate.Name = newClass.Name;
-            classToUpdate.Division = newClass.Division;
-
-            return (classToUpdate);
-
+            {
+                return false;
+            }
+            else 
+            {
+                classToUpdate.Name = _class.Name;
+                classToUpdate.Division = _class.Division;
+                await _context.SaveChangesAsync();
+                return true;
+            }
         }
 
-        public async Task DeleteClass(int id)
+        public async Task<bool> DeleteClass(Class classToDelete)
         {
-            var classToDelete = await GetClassById(id);
-            var listOfClasses = await _context.Classes.ToListAsync();
-            listOfClasses.Remove(classToDelete);
+            if (classToDelete==null) 
+            {
+                return false;
+            }
+            else 
+            {
+                _context.Classes.Remove(classToDelete);
+                   await _context.SaveChangesAsync();
+                return true;
+            }
         }
 
 

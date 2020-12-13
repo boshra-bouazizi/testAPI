@@ -9,10 +9,10 @@ namespace SchoolManagement.Services.Repositories
     public interface ICoursesRepository
     {
         Task<IEnumerable<Courses>> GetAll();
-        Task<Courses> Add(Courses coursesToAdd);
-        Task<Courses> GetCoursesById(int id);
-        Task<Courses> UpdateCourses(Courses newCourses);
-        Task DeleteCourses(int id);
+        Task<bool> AddCourses(Courses coursesToAdd);
+        Task<Courses> GetCourses(int id);
+        Task<bool> UpdateCourses(Courses coursesPut);
+        Task<bool>DeleteCourses(Courses coursesToDelete);
     }
 
 }

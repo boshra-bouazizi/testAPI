@@ -1,5 +1,6 @@
 ﻿using SchoolManagement.DOMAIN;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SchoolManagement.Services.Repositories
@@ -7,9 +8,9 @@ namespace SchoolManagement.Services.Repositories
     public interface IStudentRepository
     {
         Task<IEnumerable<Student>> GetAll();
-        Task<Student> Add(Student studentToAdd);
-        Task<Student> GetStudentById(int id);
-        Task<Student> UpdateStudent(Student newStudent);
-        Task<bool> DeleteStudentById(int id);
+        Task<bool> AddStudent(Student studentToAdd);
+        Task<Student> GetStudent(int id);
+        Task<bool> UpdateStudent(Student student);
+        Task<bool> DeleteStudent(Student studentToDelete);
     }
 }

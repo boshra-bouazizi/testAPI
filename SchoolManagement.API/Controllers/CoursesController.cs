@@ -25,27 +25,35 @@ namespace SchoolManagement.API.Controllers
         {
             var coursesToAdd = new Courses()
             {
-                Name = courses.Name,
-                ClassId = courses.ClassId///
+                Name = courses.Name
+                //ClassId = courses.ClassId
             };
 
             var addedCourses = await _coursesRepository.Add(coursesToAdd);
 
-            if (addedCourses == null)
+            if (addedCourses == false)
             {
-                return BadRequest("Une erreur a surevenue");
+                return BadRequest("Failure to add item");
             }
             else
             {
-                return Ok(addedCourses);
+                return Ok("Addition successfully");
             }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCourses(int id)
         {
-            var coursesToReturn = await _coursesRepository.GetCoursesById(id);
-            return Ok(coursesToReturn);
+            var coursesToReturn = await _coursesRepository.GetCourses(id);
+            if(coursesToReturn==null)
+{
+ return NotFound("Not found item.");
+}
+else 
+            {
+                return Ok(coursesToReturn);
+            }
+
         }
 
         [HttpGet()]
@@ -58,15 +66,33 @@ namespace SchoolManagement.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateCourses([FromBody] Courses courses)
         {
-            var coursesToUpdate = await _coursesRepository.UpdateCourses(courses);
-
-            return Ok(coursesToUpdate);
+		if(courses=null)
+{
+return NotFound("No founded item.");
+}
+else
+{
+await _coursesRepository.UpdateCourses(courses);
+return Ok("ok");
+}
+                 
         }
 
         [HttpDelete("{id:int}")]
-        public async Task DeleteCourses(int id)
+        public async Task<IActionResult> DeleteCourses(int id)
         {
-            await _coursesRepository.DeleteCourses(id);
+Courses coursesToDelete=await _coursesRepository.GetCourses(id);
+if(coursesToDelete==null)
+{
+return NotFound("Not founded item");
+}
+else
+{
+await _coursesRepository.DeleteCourses(coursesToDelete);
+return Ok("Suppression with success");
+}
+
+            
         }
     }
 

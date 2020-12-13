@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SchoolManagement.DOMAIN;
+using System;
 
 namespace SchoolManagement.DATA
 {

@@ -23,55 +23,64 @@ namespace SchoolManagement.Services.Repositories
             return await _context.Courses.ToListAsync();
         }
 
-        public async Task<Courses> GetCoursesById(int id)
+        public async Task<Courses> GetCourses(int id)
         {
             return await _context.Courses.FirstOrDefaultAsync(Courses => Courses.Id == id);
         }
 
-        public async Task<Courses> Add(Courses coursesToAdd)
+        public async Task<bool> AddCourses(Courses coursesToAdd)
         {
-            //if(ClassToAdd == null)
-            //{
-            //    return  ArgumentNullException();
-            //}
-
             var courses = new Courses()
             {
-                Name = coursesToAdd.Name,
-                ClassId = coursesToAdd.ClassId
+                Name = coursesToAdd.Name
             };
-            // 1- Ajout de l'entité crée au niveau de la memoire temporelle 
-            _context.Add(courses);
 
-            // 2- Persist changes to the database
-
-            if (await _context.SaveChangesAsync() >= 0)
+            
+            if (coursesToAdd == null)
             {
-                return courses;
+                return false;
             }
-            else
+
+            else 
             {
-                return null;
+                _context.Add(courses);
+                await _context.SaveChangesAsync();
+                return true;
             }
 
         }
 
-        public async Task<Courses> UpdateCourses(Courses newCourses)
+        public async Task<bool> UpdateCourses(Courses coursesPut)
         {
-            var coursesToUpdate = await GetCoursesById(newCourses.Id);
+            Courses coursesToUpdate = await GetCourses(coursesPut.Id); 
+	    if(coursesToUpdate==null)
+	    {
+		return false;
+	    }
+	else
+	{
+	      coursesToUpdate.Name = coursesPut.Name;
+            //coursesToUpdate.ClassId = coursesPut.ClassId;
+	      await _context.SaveChangesAsync();
+	      return true;
 
-            coursesToUpdate.Name = newCourses.Name;
-            coursesToUpdate.ClassId = newCourses.ClassId;
-
-            return (coursesToUpdate);
+	}
 
         }
 
-        public async Task DeleteCourses(int id)
+        public async Task <bool>DeleteCourses(Courses coursesToDelete)
         {
-            var coursesToDelete = await GetCoursesById(id);
-            var listOfCourses = await _context.Courses.ToListAsync();
-            listOfCourses.Remove(coursesToDelete);
+
+if(coursesToDelete==null)
+{return false;}
+else
+{
+_context.Courses.Remove(coursesToDelete);
+                await _context.SaveChangesAsync();
+                return true;
+
+}
+            
         }
 
        

@@ -25,6 +25,9 @@ namespace SchoolManagement.API
             services.AddDbContext<SchoolManagementContext>(
                          options => options.UseSqlServer(Configuration.GetConnectionString("SchoolManagementConnection")));
             services.AddScoped<IStudentRepository, StudentRepository>();
+	services.AddScoped<ICoursesRepository, CoursesRepository>();
+	services.AddScoped<IClassRepository, ClassRepository>();	
+
 
         }
 

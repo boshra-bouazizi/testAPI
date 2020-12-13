@@ -1,4 +1,7 @@
-﻿namespace SchoolManagement.DOMAIN
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+namespace SchoolManagement.DOMAIN
 {
     public class Courses
     {

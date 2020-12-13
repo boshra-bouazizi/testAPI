@@ -9,9 +9,9 @@ namespace SchoolManagement.Services.Repositories
     public interface IClassRepository
     {
         Task<IEnumerable<Class>> GetAll();
-        Task<Class> Add(Class classToAdd);
-        Task<Class> GetClassById(int id);
-        Task<Class> UpdateClass(Class newClass);
-        Task DeleteClass(int id);
+        Task<bool> AddClass(Class classToAdd);
+        Task<Class> GetClass(int id);
+        Task<bool> UpdateClass(Class _class);
+        Task<bool> DeleteClass(Class classToDelete);
     }
 }
