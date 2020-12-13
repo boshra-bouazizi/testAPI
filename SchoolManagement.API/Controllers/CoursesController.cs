@@ -29,7 +29,7 @@ namespace SchoolManagement.API.Controllers
                 //ClassId = courses.ClassId
             };
 
-            var addedCourses = await _coursesRepository.Add(coursesToAdd);
+            var addedCourses = await _coursesRepository.AddCourses(coursesToAdd);
 
             if (addedCourses == false)
             {
