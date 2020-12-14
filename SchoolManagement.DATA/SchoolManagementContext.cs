@@ -28,7 +28,7 @@ namespace SchoolManagement.DATA
                 .HasForeignKey(sc => sc.StudentId);  // and he has a foreign key called StudentId
 
             modelBuilder.Entity<StudentClass>()
-                .HasOne(cl => cl.Class)// We have an instance of a Class
+                .HasOne(cl => cl.Classes)// We have an instance of a Class
                 .WithMany(c => c.StudentClasses) // We have an instance of Student
                 .HasForeignKey(cl => cl.ClassId);// We have a foreign Key called ClassId
         }

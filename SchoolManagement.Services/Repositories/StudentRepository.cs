@@ -3,6 +3,7 @@ using SchoolManagement.DATA;
 using SchoolManagement.DOMAIN;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,15 @@ namespace SchoolManagement.Services.Repositories
 
         public async Task<IEnumerable<Student>> GetAll()
         {
-            return await _context.Students.ToListAsync();
+            //return await _context.Students.ToListAsync();
+            //return await _context.Students
+            //.Include(s => s.StudentClasses)
+            //.ToListAsync();
+
+            return await _context.Students
+                      .Include(s => s.StudentClasses)
+                      .ThenInclude(sc => sc.Classes).ToListAsync();
+
         }
 
         public async Task<Student> GetStudent(int id)
@@ -34,7 +43,8 @@ namespace SchoolManagement.Services.Repositories
             {
                 FirstName = studentToAdd.FirstName,
                 LastName = studentToAdd.LastName,
-                BirthDate = studentToAdd.BirthDate
+                BirthDate = studentToAdd.BirthDate,
+
             };
 
             if (studentToAdd == null)
@@ -42,13 +52,13 @@ namespace SchoolManagement.Services.Repositories
                 return false;
             }
 
-            else 
+            else
             {
                 _context.Add(student);
                 await _context.SaveChangesAsync();
                 return true;
             }
-            
+
 
         }
 
@@ -59,8 +69,8 @@ namespace SchoolManagement.Services.Repositories
             {
                 return false;
             }
-           
-            else 
+
+            else
             {
                 studentToUpdate.LastName = student.LastName;
                 studentToUpdate.FirstName = student.FirstName;
@@ -69,14 +79,14 @@ namespace SchoolManagement.Services.Repositories
                 await _context.SaveChangesAsync();
                 return true;
             }
-            
+
         }
 
         public async Task<bool> DeleteStudent(Student studentToDelete)
         {
             if (studentToDelete == null)
             {
-                return  false;
+                return false;
             }
             else
             {
@@ -84,7 +94,7 @@ namespace SchoolManagement.Services.Repositories
                 await _context.SaveChangesAsync();
                 return true;
             }
-            
+
         }
     }
 }
