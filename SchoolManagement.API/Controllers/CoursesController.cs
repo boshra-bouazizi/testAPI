@@ -64,15 +64,16 @@ else
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCourses([FromBody] Courses courses)
+        public async Task<IActionResult> UpdateCourses([FromBody] Courses coursesPut)
         {
-		if(courses=null)
+
+		if(coursesPut==null)
 {
 return NotFound("No founded item.");
 }
 else
 {
-await _coursesRepository.UpdateCourses(courses);
+await _coursesRepository.UpdateCourses(coursesPut);
 return Ok("ok");
 }
                  

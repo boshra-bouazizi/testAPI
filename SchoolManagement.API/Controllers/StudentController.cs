@@ -27,7 +27,7 @@ namespace SchoolManagement.API.Controllers
             {
                 FirstName = student.FirstName,
                 LastName = student.LastName,
-                BirthDate = student.BirthDate
+                
             };
 
             var addedStudent = await _studentRepository.AddStudent(studentToAdd);
