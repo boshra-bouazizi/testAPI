@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-namespace SchoolManagement.DOMAIN
+namespace SchoolManagement.DOMAINdddd
 {
 	public class Class
 	{

@@ -21,11 +21,6 @@ namespace SchoolManagement.Services.Repositories
 
         public async Task<IEnumerable<Student>> GetAll()
         {
-            //return await _context.Students.ToListAsync();
-            //return await _context.Students
-            //.Include(s => s.StudentClasses)
-            //.ToListAsync();
-
             return await _context.Students
                       .Include(s => s.StudentClasses)
                       .ThenInclude(sc => sc.Classes).ToListAsync();
@@ -34,7 +29,8 @@ namespace SchoolManagement.Services.Repositories
 
         public async Task<Student> GetStudent(int id)
         {
-            return await _context.Students.FirstOrDefaultAsync(student => student.Id == id);
+            return await _context.Students
+                                          .FirstOrDefaultAsync(student => student.Id == id);
         }
 
         public async Task<bool> AddStudent(Student studentToAdd)
@@ -46,6 +42,7 @@ namespace SchoolManagement.Services.Repositories
                 BirthDate = studentToAdd.BirthDate,
 
             };
+            
 
             if (studentToAdd == null)
             {
@@ -54,6 +51,7 @@ namespace SchoolManagement.Services.Repositories
 
             else
             {
+                
                 _context.Add(student);
                 await _context.SaveChangesAsync();
                 return true;
