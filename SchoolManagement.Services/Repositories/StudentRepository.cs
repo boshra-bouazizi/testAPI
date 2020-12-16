@@ -29,8 +29,7 @@ namespace SchoolManagement.Services.Repositories
 
         public async Task<Student> GetStudent(int id)
         {
-            return await _context.Students
-                                          .FirstOrDefaultAsync(student => student.Id == id);
+            return await _context.Students.FirstOrDefaultAsync(student => student.Id == id);
         }
 
         public async Task<bool> AddStudent(Student studentToAdd)
@@ -52,8 +51,8 @@ namespace SchoolManagement.Services.Repositories
                 var studentClass = new StudentClass()
 
                 {
-                    Student = student,
-                    Classes = await classE
+                    Student = student,// type of Student class
+                    Classes = await classE// type of task, so you can not get the disired result
                 };
                  _context.StudentClasses.Add(studentClass);
                 _context.Students.Add(studentToAdd);
