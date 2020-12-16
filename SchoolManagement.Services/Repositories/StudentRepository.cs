@@ -40,24 +40,26 @@ namespace SchoolManagement.Services.Repositories
                 FirstName = studentToAdd.FirstName,
                 LastName = studentToAdd.LastName,
                 BirthDate = studentToAdd.BirthDate,
-
             };
-            
-
             if (studentToAdd == null)
             {
                 return false;
-            }
-
+            }   
             else
             {
-                
-                _context.Add(student);
+                var classE = _context.Classes.FirstOrDefaultAsync(c => c.Id == student.Id);
+
+                var studentClass = new StudentClass()
+
+                {
+                    Student = student,
+                    Classes = await classE
+                };
+                 _context.StudentClasses.Add(studentClass);
+                _context.Students.Add(studentToAdd);
                 await _context.SaveChangesAsync();
                 return true;
             }
-
-
         }
 
         public async Task<bool> UpdateStudent(Student student)
